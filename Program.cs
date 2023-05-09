@@ -12,6 +12,7 @@ var slicer = new HapGenSlicer.Slicer(
     options.ResultHapPath,
     options.ExpectedGenPath,
     options.SnpProportion,
-    options.SamplesToGenProportion);
+    options.SamplesToGenProportion,
+    options.SystemType.GetNewLineCharacter());
 
 slicer.Slice();

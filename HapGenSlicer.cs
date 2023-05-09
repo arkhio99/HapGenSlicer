@@ -11,6 +11,7 @@ public class Slicer
     private readonly string _expectedGenPath;
     private readonly double _snpProportion;
     private readonly double _samplesToGenProportion;
+    private readonly string _newLineCharacter;
 
     public Slicer(
         string initialLegendPath,
@@ -19,7 +20,8 @@ public class Slicer
         string resultHapPath,
         string expectedGenPath,
         double snpProportion,
-        double samplesToGenProportion)
+        double samplesToGenProportion,
+        string newLineCharacter)
     {
         _initialLegendPath = initialLegendPath ?? throw new ArgumentNullException(nameof(initialLegendPath));
         _initialHapPath = initialHapPath ?? throw new ArgumentNullException(nameof(initialHapPath));
@@ -28,6 +30,7 @@ public class Slicer
         _expectedGenPath = expectedGenPath ?? throw new ArgumentNullException(nameof(expectedGenPath));
         _snpProportion = snpProportion;
         _samplesToGenProportion = samplesToGenProportion;
+        _newLineCharacter = newLineCharacter ?? throw new ArgumentNullException(nameof(newLineCharacter));
     }
 
     public void Slice()
@@ -85,13 +88,13 @@ public class Slicer
                 hapCurrentChar = (char)hapReader.Read();
             }
             
-            expectedGenWriter.Write(Environment.NewLine);
+            expectedGenWriter.Write(_newLineCharacter);
             if (isSnpInGen)
             {
-                resultGenWriter.Write(Environment.NewLine);
+                resultGenWriter.Write(_newLineCharacter);
             }
 
-            resultHapWriter.Write(Environment.NewLine);
+            resultHapWriter.Write(_newLineCharacter);
 
             currentLegendLine = legendReader.ReadLine();
         }

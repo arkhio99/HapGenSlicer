@@ -9,4 +9,5 @@ public class RunnerOptions
     public string ResultGenPath { get; set; }
     public string ResultHapPath { get; set; }
     public string ExpectedGenPath { get; set; }
+    public SystemType SystemType { get; set; }
 }

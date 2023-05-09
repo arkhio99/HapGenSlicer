@@ -34,7 +34,11 @@ public class RunnerOptionsParser
 
     public RunnerOptionsParser()
     {
-        _options = new RunnerOptions();
+        _options = new RunnerOptions
+        {
+            SystemType = SystemType.Linux,
+        };
+
         _optionSet = new OptionSet
         {
             { $"{_paramNameByRunnerOptionsName[nameof(RunnerOptions.SnpProportion)]}=", "Proportion of SNP that goes to the .gens file, value in (0, 1)", v => _options.SnpProportion = TryParseDouble(v, "sp|snp-prop|snp-proportion") },
@@ -44,6 +48,9 @@ public class RunnerOptionsParser
             { $"{_paramNameByRunnerOptionsName[nameof(RunnerOptions.ResultGenPath)]}=", "Path to resulting .gen file", v => _options.ResultGenPath = v },
             { $"{_paramNameByRunnerOptionsName[nameof(RunnerOptions.ResultHapPath)]}=", "Path to resulting .hap file", v => _options.ResultHapPath = v },
             { $"{_paramNameByRunnerOptionsName[nameof(RunnerOptions.ExpectedGenPath)]}=", "", v => _options.ExpectedGenPath = v },
+            { "linux", "If result of program should be used on linux system (by default no of --mac or --windows wasn't defined)", _ => _options.SystemType = SystemType.Linux },
+            { "mac", "If result of program should be used on Mac system", _ => _options.SystemType = SystemType.Mac },
+            { "windows", "If result of program should be used on windows system", _ => _options.SystemType = SystemType.Windows },
             { "h|help", "Show help", _ => _showHelp = true },
         };
     }
