@@ -48,12 +48,11 @@ public class Slicer
         while (currentLegendLine != null && currentLegendLine != string.Empty)
         {
             currentLegendLine = currentLegendLine.TrimEnd('\r', '\n');
-            currentLegendLine = currentLegendLine.Split(' ')[0] + " " + currentLegendLine;
             var isSnpInGen = RandomizeWithProportion(_snpProportion);
             expectedGenWriter.Write(currentLegendLine);
             if (isSnpInGen)
             {
-                resultGenWriter.Write(currentLegendLine);
+                resultGenWriter.Write(currentLegendLine.Split(' ')[0] + " " + currentLegendLine);
             }
 
             var hapCurrentChar = (char)hapReader.Read();
