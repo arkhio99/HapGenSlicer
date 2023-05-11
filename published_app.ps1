@@ -1,0 +1,1 @@
+dotnet publish .\HapGenSlicer.csproj --sc --use-current-runtime -o ./PublishedApp

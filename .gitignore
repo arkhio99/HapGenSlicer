@@ -428,3 +428,4 @@ FodyWeavers.xsd
 
 # Custom ignore
 Data/
+PublishedApp/
