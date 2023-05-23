@@ -114,15 +114,18 @@ public class Slicer
     private string ReadToSpaceOrEnd(StreamReader reader, char currentChar)
     {
         var stringBuilder = new StringBuilder();
-        while (currentChar != ' ' || currentChar != '\r')
+        stringBuilder.Append(currentChar);
+        while (currentChar != ' ' && reader.Peek() != '\r' && reader.Peek() != '\n')
         {
-            if (currentChar == ' ' || currentChar == '\r')
+            currentChar = (char)reader.Read();
+            if (currentChar == ' ' || reader.Peek() == '\r' || reader.Peek() == '\n')
             {
                 break;
             }
-
-            stringBuilder.Append(currentChar);
-            currentChar = (char)reader.Read();
+            else
+            {
+                stringBuilder.Append(currentChar);
+            }
         }
 
         return stringBuilder.ToString();
