@@ -59,7 +59,7 @@ public class Slicer
             var columnIndex = 0;
             while (hapCurrentChar != '\n' && hapCurrentChar != '\r')
             {
-                var hapValue = ReadToSpaceOrEnd(hapReader, hapCurrentChar);
+                var hapValue = ReadToSpaceOrEnd(hapReader, ref hapCurrentChar);
                 if (sampleIndexes.Contains(columnIndex))
                 {
                     expectedGenWriter.Write(' ');
@@ -77,6 +77,16 @@ public class Slicer
                     {
                         resultHapWriter.Write(' ');
                     }
+                }
+
+                if (hapCurrentChar == '\r')
+                {
+                    hapCurrentChar = (char)hapReader.Read();
+                }
+
+                if (hapCurrentChar == '\n')
+                {
+                    break;
                 }
 
                 columnIndex++;
@@ -111,14 +121,14 @@ public class Slicer
         return new Random().NextDouble() < proportionOfTrue;
     }
 
-    private string ReadToSpaceOrEnd(StreamReader reader, char currentChar)
+    private string ReadToSpaceOrEnd(StreamReader reader, ref char currentChar)
     {
         var stringBuilder = new StringBuilder();
         stringBuilder.Append(currentChar);
-        while (currentChar != ' ' && reader.Peek() != '\r' && reader.Peek() != '\n')
+        while (currentChar != ' ' && currentChar != '\r' && currentChar != '\n')
         {
             currentChar = (char)reader.Read();
-            if (currentChar == ' ' || reader.Peek() == '\r' || reader.Peek() == '\n')
+            if (currentChar == ' ' || currentChar == '\r' || currentChar == '\n')
             {
                 break;
             }
@@ -139,7 +149,17 @@ public class Slicer
         var columnIndex = 0;
         while (hapCurrentChar != '\n' && hapCurrentChar != '\r')
         {
-            ReadToSpaceOrEnd(hapReader, hapCurrentChar);
+            ReadToSpaceOrEnd(hapReader, ref hapCurrentChar);
+            if (hapCurrentChar == '\r')
+            {
+                hapCurrentChar = (char)hapReader.Read();
+            }
+
+            if (hapCurrentChar == '\n')
+            {
+                break;
+            }
+
             if (RandomizeWithProportion(_samplesToGenProportion))
             {
                 sampleIndexes.Add(columnIndex);
@@ -150,8 +170,7 @@ public class Slicer
             hapCurrentChar = (char)hapReader.Read();
         }
 
-        lastHapIndex--; // because it reads until symbol is \r or \n
-                        // so it will be recognized as another index
+        sampleIndexes.Add(lastHapIndex - 1);
         
         hapReader.DiscardBufferedData();
         hapReader.BaseStream.Seek(0, SeekOrigin.Begin);
